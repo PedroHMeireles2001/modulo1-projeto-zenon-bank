@@ -20,7 +20,6 @@ public class TransactionIngestor {
             return lines
                     .map(this::parseTransaction)
                     .flatMap(Optional::stream)
-                    .limit(1000)
                     .toList();
         }
     }

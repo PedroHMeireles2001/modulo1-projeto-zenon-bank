@@ -1,22 +1,33 @@
 package br.com.zenon;
 
 
-import br.com.zenon.fraud.AccountTransactionInfo;
-import br.com.zenon.fraud.Transaction;
-import br.com.zenon.fraud.TransactionIngestor;
-import br.com.zenon.fraud.TransactionType;
+import br.com.zenon.fraud.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        List<Transaction> transactions = new TransactionIngestor().getAll("C:\\Users\\user\\Documents\\Estudo\\modulo1-projeto-zenon-bank\\data\\paysim.csv");
+        List<Transaction> transactions = new TransactionIngestor().getAll("C:\\Users\\user\\Documents\\Estudo\\modulo1-projeto-zenon-bank\\data\\PS_20174392719_1491204439457_log.csv");
         System.out.println("Success: " + transactions.size());
         System.out.println("Errors: " + TransactionIngestor.getErros());
 
-        System.out.println(transactions);
+        FraudAnalyzer analyzer = new FraudAnalyzer(transactions);
+
+        System.out.println("Total de fraudes: " + analyzer.getFraudulentTransactionsSize());
+        System.out.println("Top 3 fraudes por valor: ");
+        System.out.println(analyzer.getTopFraudulentTransactions().stream().map(Transaction::amount).map(Objects::toString).collect(Collectors.joining(System.lineSeparator())));
+        System.out.println("Top clientes suspeitos: ");
+        System.out.println(String.join(System.lineSeparator(),analyzer.getTopSuspiciousClients()));
+        System.out.println("Prejuízo total: " + analyzer.getTotalInjuryAmount());
+        System.out.println("Fraudes por tipo: ");
+
+        Map<TransactionType,Long> groupedByType = analyzer.groupFraudulentTransactionsByType();
+        System.out.println(groupedByType.entrySet().stream().map(entry -> " - %s: %s".formatted(entry.getKey(),entry.getValue())).collect(Collectors.joining(System.lineSeparator())));
     }
 
     private static void printTransaction() {
