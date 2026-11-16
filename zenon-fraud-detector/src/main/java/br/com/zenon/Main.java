@@ -12,10 +12,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        List<Transaction> transactions = new TransactionIngestor().getAll("C:\\Users\\F279326\\OneDrive - Claro SA\\Documentos\\Estudo\\modulo1-projeto-zenon-bank\\data\\PS_20174392719_1491204439457_log.csv");
+        List<Transaction> transactions = new TransactionIngestor().getAll("C:\\Users\\user\\Documents\\Estudo\\modulo1-projeto-zenon-bank\\data\\paysim.csv");
         System.out.println("Success: " + transactions.size());
-        int errors = 1000 - transactions.size();
-        System.out.println("Errors: " + errors);
+        System.out.println("Errors: " + TransactionIngestor.getErros());
 
         System.out.println(transactions);
     }
