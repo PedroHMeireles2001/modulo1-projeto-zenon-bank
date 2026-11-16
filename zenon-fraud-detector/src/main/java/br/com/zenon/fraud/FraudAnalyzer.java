@@ -23,7 +23,7 @@ public class FraudAnalyzer {
     public List<Transaction> getTopFraudulentTransactions() {
         return transactions.stream()
                 .filter(Transaction::isFraud)
-                .sorted(Comparator.comparing(Transaction::amount))
+                .sorted(Comparator.comparing(Transaction::amount).reversed())
                 .limit(3)
                 .toList();
     }

@@ -45,8 +45,8 @@ public class TransactionIngestor {
                             new BigDecimal(chunks[7]),
                             new BigDecimal(chunks[8])
                     ),
-                    Boolean.parseBoolean(chunks[9]),
-                    Boolean.parseBoolean(chunks[10]));
+                    convertToBoolean(chunks[9]),
+                    convertToBoolean(chunks[10]));
 
             verifyFields(transaction);
             return Optional.of(transaction);
@@ -83,4 +83,10 @@ public class TransactionIngestor {
             }
         }
     }
+
+    private boolean convertToBoolean(String value) {
+        return "1".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) ||
+                "true".equalsIgnoreCase(value) || "on".equalsIgnoreCase(value);
+    }
+
 }
